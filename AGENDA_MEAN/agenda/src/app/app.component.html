@@ -1,0 +1,114 @@
+<div class="container">
+    <div class="row">
+        <h2 class="titlle">AGENDA</h2>
+        <p class="espe">Práctica realizada por Esperanza Martín Grupo1</p>
+    </div>    
+    <mat-divider></mat-divider>     
+    <div class="row"> 
+        
+        <!-- añadimos/eliminamos/modificamos contacto un contacto, pestaña2 -->
+        <mat-card class="card col-lg-7 col-md-6 col-sm-10"> 
+            <h4 class="titlle">Añadir/Modificar</h4>
+              
+            <form class="form" [formGroup]="contactForm">
+                <mat-form-field class="input-field">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" formControlName="name" [(ngModel)]="selectedPerson.name" required/>
+                    <mat-error  *ngIf="contactForm.get('lastname').invalid" [ngStyle]='{color:"red"}'>
+                        * Longitud minima 3 caracteres.
+                    </mat-error > 
+                </mat-form-field> 
+
+                <mat-form-field class="input-field">
+                    <mat-label>Apellidos</mat-label>
+                    <input matInput type="text" formControlName ="lastname" [(ngModel)]="selectedPerson.lastname" required/>
+                    <mat-error  *ngIf="contactForm.get('lastname').invalid" [ngStyle]='{color:"red"}'>
+                        * Longitud minima 3 caracteres.
+                    </mat-error >         
+                </mat-form-field>  
+
+                <mat-form-field class="input-field">
+                    <mat-label>Edad</mat-label>
+                    <input matInput type="text" formControlName ="age" [(ngModel)]="selectedPerson.age" required/>
+                    <mat-error *ngIf="contactForm.get('age').invalid" [ngStyle]='{color:"red"}'>
+                        * indica una edad entre 0 - 125 años.
+                    </mat-error>
+                </mat-form-field> 
+
+                <mat-form-field class="input-field">
+                    <mat-label>DNI</mat-label>
+                    <input matInput type="text" formControlName="dni" [(ngModel)]="selectedPerson.dni" required/>
+                    <mat-error  *ngIf="contactForm.get('dni').invalid" [ngStyle]='{color:"red"}'>
+                        * Escride 8 numeros + 1 letra.
+                    </mat-error > 
+                </mat-form-field> 
+
+                <mat-form-field class="input-field">
+                    <mat-label>Fecha Cumpleaños</mat-label>
+                    <!-- <input [matDatepicker]="picker" matInput formControlName="birthday" [(ngModel)]="selectedPerson.birthday" required/>                                       -->
+                    <input type="date" matInput formControlName="birthday" [(ngModel)]="selectedPerson.birthday" required/>                                      
+                    <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker> -->
+                </mat-form-field>
+
+                <mat-form-field class="input-field">
+                    <mat-label>Color favorito</mat-label>
+                    <input matInput type="text" formControlName="color" [(ngModel)]="selectedPerson.color" required/>
+                    <mat-error  *ngIf="contactForm.get('color').invalid" [ngStyle]='{color:"red"}'>
+                        * Longitud minima 3 caracteres.
+                    </mat-error > 
+                </mat-form-field> 
+
+                <mat-form-field class="input-field">
+                    <mat-select formControlName="gender" placeholder="Selecciona una opción" [(ngModel)]="selectedPerson.gender" required>
+                        <mat-option>Selecciona una opción</mat-option>
+                        <ng-container *ngFor="let gender of genders">
+                          <mat-option value="{{gender.id}}">{{gender.value}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <br/>
+                <cite class="cite">* Campo obligatorio</cite>   
+                <br/>
+                <button class="button" mat-flat-button color="warn" *ngIf = "selectedPerson._id !== null " (click) = "deleteContact(selectedPerson._id)" title="Borrar contacto">    
+                    <mat-icon>delete</mat-icon>
+                </button> <br/>            
+                <button class="button-ok" mat-flat-button (click) = "insertOrEdit()" > Añadir-Modificar </button> 
+                <br/><cite class="cite">Selecciona un contacto para modificarlo</cite>   
+            </form>
+        </mat-card>      
+        <!-- Mostramos lista de contactos -->
+        <mat-card class="card col-lg-4 col-md-6 col-sm-10">  
+            <h4 class="titlle">Contactos</h4>
+           
+             <mat-list>                  
+                <ul class="list-group-item list-group-item-action list-unstyled" *ngFor='let contact of contacts'>
+                    <li (click) = "startEdit(contact)" [class.active] = "contact == selectedPerson"> 
+                        <mat-icon>face</mat-icon>                         
+                        <b> {{contact.name}} {{contact.lastname}}:</b>
+                        <ul class="list-group-item list-unstyled">                       
+                            <li>
+                                <mat-icon class="icon-field"> favorite</mat-icon>{{contact.age}} años
+                            </li>
+                            <li>
+                                <mat-icon class="icon-field">fingerprint</mat-icon>{{contact.dni}}
+                            </li>
+                            <li>
+                                <mat-icon class="icon-field">today</mat-icon>{{contact.birthday | date:'dd/MM/yyyy'}}
+                            </li>
+                            <li>
+                                <mat-icon class="icon-field">color_lens</mat-icon>{{contact.color}}
+                            </li>
+                            <li>
+                                <mat-icon class="icon-field">supervisor_account</mat-icon>{{contact.gender}}
+                            </li>
+                            <li>
+                                <mat-icon class="icon-field">sd_storage</mat-icon> ID (identificador): {{contact._id}}
+                            </li>
+                       </ul>  
+                    </li>
+                </ul>
+            </mat-list> 
+        </mat-card>   
+    </div>
+</div>
